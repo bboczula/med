@@ -3,17 +3,21 @@
 #include <string>
 using namespace std;
 
+string prompt()
+{
+	string mode = "NORMAL";
+	return mode + "> ";
+}
+
 int main()
 {
 	ifstream file("main.cpp");
-	string mode = "NORMAL";
-	string prompt = mode + "> ";
-	string line;
+	string choice;
 	while(true)
 	{
-		cout << prompt;
-		cin >> line;
-		if(line == "q")
+		cout << prompt();
+		cin >> choice;
+		if(choice == "q")
 		{
 			return 0;
 		}
