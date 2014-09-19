@@ -1,2 +1,2 @@
 all:
-	g++ main.cpp CStorage.h ICommand.h -o med
+	g++ main.cpp CStorage.h CStorageHandler.h ICommand.h -o med

@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "CStorage.h"
+#include "CStorageHandler.h"
 using namespace std;
 
 enum ECommandType
@@ -43,10 +43,13 @@ string prompt()
 	return mode + "> ";
 }
 
+class CInputHandler
+{
+};
+
 int main()
 {
-	int lineNumber = 0;
-	CStorage storage("main.cpp");
+    CStorageHandler storageHandler;
 
 	string choice;
 	while(true)
@@ -58,18 +61,15 @@ int main()
         {
             if(c[i] == PRINT)
             {
-                cout << storage.getLineAt(lineNumber)<< endl;
-                continue;
+                storageHandler.printCurrentLine();
             }
             if(c[i] == INCR_LINE)
             {
-                lineNumber++;
-                continue;
+                storageHandler.incrementLine();
             }
             if(c[i] == DECR_LINE)
             {
-                lineNumber--;
-                continue;
+                storageHandler.decrementLine();
             }
             if(c[i] == QUIT)
             {
