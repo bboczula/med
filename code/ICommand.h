@@ -20,6 +20,15 @@ public:
     }
 };
 
+class CPrintAroundCommand : public ICommand
+{
+public:
+    virtual void execute(CStorageHandler* storage)
+    {
+        storage->printAround();
+    }
+};
+
 class CIncrementLineCommand : public ICommand
 {
 public:

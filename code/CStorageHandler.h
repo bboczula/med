@@ -32,6 +32,12 @@ public:
     {
         currentLineNumber--;
     }
+    void printAround()
+    {
+        printLineAt(currentLineNumber-1);
+        printLineAt(currentLineNumber);
+        printLineAt(currentLineNumber+1);
+    };
 };
 
 #endif

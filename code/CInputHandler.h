@@ -63,6 +63,10 @@ public:
         {
             return new  CPrintCommand();
         }
+        if(commandString == "P")
+        {
+            return new  CPrintAroundCommand();
+        }
         if(commandString == "+")
         {
             return new CIncrementLineCommand();
