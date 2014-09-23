@@ -34,7 +34,8 @@ public:
     }
     void printAround()
     {
-        printLineAt(currentLineNumber-1);
+        if(currentLineNumber > 0)
+            printLineAt(currentLineNumber-1);
         printLineAt(currentLineNumber);
         printLineAt(currentLineNumber+1);
     };
