@@ -1,6 +1,7 @@
 #ifndef C_INPUT_HANDLER_H
 #define C_INPUT_HANDLER_H
 #include "CStorageHandler.h"
+#include "ICommand.h"
 using namespace std;
 
 enum ECommandType
@@ -39,6 +40,7 @@ class CInputHandler
 
         return commands;
     }
+    ICommand* printCommand;
 public:
     CInputHandler(CStorageHandler* s) : storageHandler(s)
     {
@@ -50,28 +52,29 @@ public:
     }
     bool process(string commandString)
     {
-        vector<ECommandType> c = translateCommand(commandString);
-        for(int i = 0; i < c.size(); i++)
-        {
-            if(c[i] == PRINT)
-            {
-                storageHandler->printCurrentLine();
-            }
-            if(c[i] == INCR_LINE)
-            {
-                storageHandler->incrementLine();
-            }
-            if(c[i] == DECR_LINE)
-            {
-                storageHandler->decrementLine();
-            }
-            if(c[i] == QUIT)
-            {
-                cout << "Goodbye!" << endl;
-                return true;
-            }
-        }
+        ICommand* cmd = getCommand(commandString);
+        if(cmd)
+            cmd->execute(storageHandler);
         return false;
+    }
+    ICommand* getCommand(string commandString)
+    {
+        if(commandString == "p")
+        {
+            return new  CPrintCommand();
+        }
+        if(commandString == "+")
+        {
+            return new CIncrementLineCommand();
+        }
+        if(commandString == "-")
+        {
+            return new CDecrementLineCommand();
+        }
+        if(commandString == "q")
+        {
+            return new CQuitCommand();
+        }
     }
 };
 
