@@ -61,11 +61,11 @@ public:
     {
         if(commandString == "p")
         {
-            return new  CPrintCommand();
+            return new CPrintCommand();
         }
         if(commandString == "P")
         {
-            return new  CPrintAroundCommand();
+            return new CPrintAroundCommand();
         }
         if(commandString == "+")
         {
