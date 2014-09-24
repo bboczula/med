@@ -10,7 +10,7 @@ public:
     CStorageHandler()
     {
         currentLineNumber = 0;
-        storage = new CStorage("main.cpp");
+        storage = new CStorage("test1");
     }
     ~CStorageHandler()
     {
@@ -36,8 +36,10 @@ public:
     {
         if(currentLineNumber > 0)
             printLineAt(currentLineNumber-1);
-        printLineAt(currentLineNumber);
-        printLineAt(currentLineNumber+1);
+        if(currentLineNumber < storage->getTotalNumberOfLines())
+            printLineAt(currentLineNumber);
+        if(currentLineNumber + 1 < storage->getTotalNumberOfLines())
+            printLineAt(currentLineNumber+1);
     };
 };
 

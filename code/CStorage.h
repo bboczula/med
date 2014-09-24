@@ -32,8 +32,16 @@ public:
 	}
 	string getLineAt(int lineNumber)
 	{
+        if(lineNumber < 0)
+            cerr << "ERROR001: you're trying to fetch line that doesn't exist!" << endl;
+        if(lineNumber >= totalNumberOfLines)
+            cerr << "ERROR002: you're trygin to fech line out of bounds!" << endl;
 		return storage[lineNumber];
 	}
+    int getTotalNumberOfLines()
+    {
+        return totalNumberOfLines;
+    }
 };
 
 #endif
