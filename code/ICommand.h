@@ -7,7 +7,9 @@
 class ICommand
 {
 public:
-    ~ICommand();
+    ~ICommand()
+    {
+    }
     virtual void execute(CStorageHandler* storage) = 0;;
 };
 
@@ -72,6 +74,26 @@ public:
     {
         std::cout << "Bye! " << std::endl;
         exit(0);
+    }
+};
+
+class CCommandComposite : public ICommand
+{
+    vector<ICommand*> children;
+public:
+    CCommandComposite()
+    {
+    }
+    void add(ICommand* cmd)
+    {
+        children.push_back(cmd);
+    }
+    virtual void execute(CStorageHandler* storage)
+    {
+        for(int i = 0; i < children.size(); i++)
+        {
+            children[i]->execute(storage);
+        }
     }
 };
 

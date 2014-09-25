@@ -21,13 +21,24 @@ ICommand* CInputHandler::getCommand(string commandString)
     {
         return new CPrintCommand();
     }
+    if(commandString == "pp")
+    {
+        CCommandComposite* doublePrint = new CCommandComposite();
+        doublePrint->add(new CPrintCommand());
+        doublePrint->add(new CIncrementLineCommand());
+        doublePrint->add(new CPrintCommand());
+        return doublePrint;;
+    }
     if(commandString == "P")
     {
         return new CPrintAroundCommand();
     }
     if(commandString == "+")
     {
-        return new CIncrementLineCommand();
+        CCommandComposite* incrementAndPrint = new CCommandComposite();
+        incrementAndPrint->add(new CIncrementLineCommand());
+        incrementAndPrint->add(new CPrintCommand());
+        return incrementAndPrint;
     }
     if(commandString == "-")
     {
