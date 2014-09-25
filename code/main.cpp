@@ -3,18 +3,20 @@
 #include "CStorageHandler.h"
 #include "ICommand.h"
 #include "CInputHandler.h"
+#include "CLogger.h"
 using namespace std;
 
 string prompt()
 {
-	string mode = "NORMAL";
+	string mode("NORMAL");
 	return mode + "> ";
 }
 
 int main()
 {
-    CStorageHandler storageHandler;
-    CInputHandler inputHandler(&storageHandler);;
+	CStorageHandler storageHandler;
+	CInputHandler inputHandler(&storageHandler);;
+	CLogger::getInstance()->log("Entered function main()");
 
 	string choice;
 	while(true)

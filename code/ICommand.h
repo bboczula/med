@@ -10,7 +10,7 @@ public:
     ~ICommand()
     {
     }
-    virtual void execute(CStorageHandler* storage) = 0;;
+    virtual void execute(CStorageHandler* storage) = 0;
 };
 
 class CPrintCommand : public ICommand

@@ -25,9 +25,8 @@ class CStorage
 		cout << totalNumberOfLines << " lines read successfully." << endl;
 	}
 public:
-	CStorage(string filename)
+	CStorage(string filename) : totalNumberOfLines(0)
 	{
-		totalNumberOfLines = 0;
 		readFile(filename);
 	}
 	string getLineAt(int lineNumber)
