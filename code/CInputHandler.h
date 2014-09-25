@@ -12,7 +12,6 @@ enum ECommandType
 class CInputHandler
 {
     CStorageHandler* storageHandler;
-    vector<ECommandType> translateCommand(string commandString);
     ICommand* printCommand;
 public:
     CInputHandler(CStorageHandler* s) : storageHandler(s)
