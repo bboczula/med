@@ -16,6 +16,10 @@ public:
     {
         delete storage;
     }
+    int getCurrentLineNumber()
+    {
+        return currentLineNumber;
+    }
     int getTotalNumberOfLines()
     {
         return storage->getTotalNumberOfLines();

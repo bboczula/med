@@ -22,6 +22,15 @@ public:
     }
 };
 
+class CPrintLineNumberCommand : public ICommand
+{
+public:
+    virtual void execute(CStorageHandler* storage)
+    {
+        std::cout << storage->getCurrentLineNumber() + 1 << " ";
+    }
+};
+
 class CPrintAroundCommand : public ICommand
 {
 public:

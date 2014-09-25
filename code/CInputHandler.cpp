@@ -23,6 +23,13 @@ ICommand* CInputHandler::getCommand(string commandString)
         {
             return new CPrintCommand();
         }
+        if(commandString == "n")
+        {
+            CCommandComposite* printWithLineNumber = new CCommandComposite();
+            printWithLineNumber->add(new CPrintLineNumberCommand());
+            printWithLineNumber->add(new CPrintCommand());
+            return printWithLineNumber;
+        }
         if(commandString == "P")
         {
             return new CPrintAroundCommand();
