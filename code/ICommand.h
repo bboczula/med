@@ -29,6 +29,15 @@ public:
     }
 };
 
+class CFirstLineCommand : public ICommand
+{
+public:
+    virtual void execute(CStorageHandler* storage)
+    {
+        storage->setCurrentLine(0);
+    }
+};
+
 class CIncrementLineCommand : public ICommand
 {
 public:

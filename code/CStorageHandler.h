@@ -24,6 +24,10 @@ public:
     {
         cout << storage->getLineAt(lineNumber) << endl;
     }
+    void setCurrentLine(int newLineNumber)
+    {
+        currentLineNumber = newLineNumber;
+    }
     void incrementLine()
     {
         currentLineNumber++;

@@ -33,6 +33,10 @@ ICommand* CInputHandler::getCommand(string commandString)
     {
         return new CDecrementLineCommand();
     }
+    if(commandString == "1")
+    {
+        return new CFirstLineCommand();
+    }
     if(commandString == "q")
     {
         return new CQuitCommand();
