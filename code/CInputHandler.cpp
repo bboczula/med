@@ -37,6 +37,10 @@ ICommand* CInputHandler::getCommand(string commandString)
     {
         return new CFirstLineCommand();
     }
+    if(commandString == "$")
+    {
+        return new CLastLineCommand();
+    }
     if(commandString == "q")
     {
         return new CQuitCommand();

@@ -38,6 +38,15 @@ public:
     }
 };
 
+class CLastLineCommand : public ICommand
+{
+public:
+    virtual void execute(CStorageHandler* storage)
+    {
+        storage->setCurrentLine(storage->getTotalNumberOfLines()-1);
+    }
+};
+
 class CIncrementLineCommand : public ICommand
 {
 public:
