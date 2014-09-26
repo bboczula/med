@@ -14,19 +14,22 @@ string prompt()
 
 int main()
 {
-	CStorageHandler storageHandler;
-	CInputHandler inputHandler(&storageHandler);;
-    CLogger::getInstance()->log();
+    CLogger::getInstance()->log("Entered function main()");
+    CStorageHandler storageHandler;
+    CInputHandler inputHandler(&storageHandler);;
 
-	string choice;
-	while(true)
-	{
-		cout << prompt();
-		cin >> choice;
+    string choice;
+    while(true)
+    {
+        CLogger::getInstance()->log("Entered main loop");
+        cout << prompt();
+        cin >> choice;
         if(inputHandler.process(choice))
         {
-            return 0;
+            CLogger::getInstance()->log("The user wants to quit the program");
+            break;
         }
-	}
-	return 0;
+    }
+    CLogger::getInstance()->log("Exiting function main()");
+    return 0;
 }
