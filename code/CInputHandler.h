@@ -4,15 +4,9 @@
 #include "ICommand.h"
 using namespace std;
 
-enum ECommandType
-{
-    PRINT, INCR_LINE, DECR_LINE, QUIT
-};
-
 class CInputHandler
 {
     CStorageHandler* storageHandler;
-    ICommand* printCommand;
 public:
     CInputHandler(CStorageHandler* s) : storageHandler(s)
     {
