@@ -18,7 +18,7 @@ public:
     {
     }
     ~CInputHandler();
-    bool process(string commandString);
+    void process(string commandString);
     ICommand* getCommand(string commandString);
 };
 

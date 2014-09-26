@@ -7,12 +7,11 @@ CInputHandler::~CInputHandler()
         delete storageHandler;
 }
 
-bool CInputHandler::process(string commandString)
+void CInputHandler::process(string commandString)
 {
     ICommand* cmd = getCommand(commandString);
     if(cmd)
         cmd->execute(storageHandler);
-    return false;
 }
 
 ICommand* CInputHandler::getCommand(string commandString)

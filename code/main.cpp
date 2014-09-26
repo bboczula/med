@@ -24,12 +24,6 @@ int main()
         CLogger::getInstance()->log("Entered main loop");
         cout << prompt();
         cin >> choice;
-        if(inputHandler.process(choice))
-        {
-            CLogger::getInstance()->log("The user wants to quit the program");
-            break;
-        }
+        inputHandler.process(choice);
     }
-    CLogger::getInstance()->log("Exiting function main()");
-    return 0;
 }
