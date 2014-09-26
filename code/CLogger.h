@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "CClock.h"
 
 class CLogger
 {
@@ -26,7 +27,7 @@ public:
     void log(std::string message)
     {
         logFile.open("med.log", std::ios::app);
-        logFile << message << std::endl;
+        logFile << CClock::getInstance()->getTimestamp() << " " << message << std::endl;
         logFile.close();
     }
 };
