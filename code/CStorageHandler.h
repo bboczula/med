@@ -1,21 +1,23 @@
 #ifndef C_STORAGE_HANDLER_H
 #define C_STORAGE_HANDLER_H
 #include "CStorage.h"
+#include "CLogger.h"
 
 class CStorageHandler
 {
-    CStorage* storage;
-    int currentLineNumber;
+	CStorage* storage;
+	int currentLineNumber;
 public:
-    CStorageHandler()
-    {
-        currentLineNumber = 0;
-        storage = new CStorage("test1");
-    }
-    ~CStorageHandler()
-    {
-        delete storage;
-    }
+	CStorageHandler() : currentLineNumber(0)
+	{
+		CLogger::getInstance()->log("CStorageHandler() created");
+		storage = new CStorage("test1");
+	}
+	~CStorageHandler()
+	{
+		delete storage;
+		CLogger::getInstance()->log("CStorageHandler() destroyed");
+	}
     int getCurrentLineNumber()
     {
         return currentLineNumber;

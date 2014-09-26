@@ -31,6 +31,4 @@ public:
 	}
 };
 
-CClock* CClock::instance = nullptr;
-
 #endif

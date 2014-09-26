@@ -2,6 +2,7 @@
 #define I_COMMAND_H
 #include "CStorageHandler.h"
 #include <iostream>
+#include <memory>
 #include <stdlib.h>
 
 class ICommand
@@ -10,13 +11,13 @@ public:
     ~ICommand()
     {
     }
-    virtual void execute(CStorageHandler* storage) = 0;
+    virtual void execute(shared_ptr<CStorageHandler> storage) = 0;
 };
 
 class CPrintCommand : public ICommand
 {
 public:
-    virtual void execute(CStorageHandler* storage)
+    virtual void execute(shared_ptr<CStorageHandler> storage)
     {
         storage->printCurrentLine();
     }
@@ -25,7 +26,7 @@ public:
 class CPrintLineNumberCommand : public ICommand
 {
 public:
-    virtual void execute(CStorageHandler* storage)
+    virtual void execute(shared_ptr<CStorageHandler> storage)
     {
         std::cout << storage->getCurrentLineNumber() + 1 << " ";
     }
@@ -34,7 +35,7 @@ public:
 class CPrintAroundCommand : public ICommand
 {
 public:
-    virtual void execute(CStorageHandler* storage)
+    virtual void execute(shared_ptr<CStorageHandler> storage)
     {
         storage->printAround();
     }
@@ -43,7 +44,7 @@ public:
 class CFirstLineCommand : public ICommand
 {
 public:
-    virtual void execute(CStorageHandler* storage)
+    virtual void execute(shared_ptr<CStorageHandler> storage)
     {
         storage->setCurrentLine(0);
     }
@@ -52,7 +53,7 @@ public:
 class CLastLineCommand : public ICommand
 {
 public:
-    virtual void execute(CStorageHandler* storage)
+    virtual void execute(shared_ptr<CStorageHandler> storage)
     {
         storage->setCurrentLine(storage->getTotalNumberOfLines()-1);
     }
@@ -61,7 +62,7 @@ public:
 class CIncrementLineCommand : public ICommand
 {
 public:
-    virtual void execute(CStorageHandler* storage)
+    virtual void execute(shared_ptr<CStorageHandler> storage)
     {
         storage->incrementLine();
     }
@@ -70,7 +71,7 @@ public:
 class CDecrementLineCommand : public ICommand
 {
 public:
-    virtual void execute(CStorageHandler* storage)
+    virtual void execute(shared_ptr<CStorageHandler> storage)
     {
         storage->decrementLine();
     }
@@ -79,7 +80,7 @@ public:
 class CQuitCommand : public ICommand
 {
 public:
-    virtual void execute(CStorageHandler* storage)
+    virtual void execute(shared_ptr<CStorageHandler> storage)
     {
         std::cout << "Bye! " << std::endl;
         exit(0);
@@ -97,7 +98,7 @@ public:
     {
         children.push_back(cmd);
     }
-    virtual void execute(CStorageHandler* storage)
+    virtual void execute(shared_ptr<CStorageHandler> storage)
     {
         for(int i = 0; i < children.size(); i++)
         {

@@ -32,6 +32,4 @@ public:
     }
 };
 
-CLogger* CLogger::instance = nullptr;
-
 #endif

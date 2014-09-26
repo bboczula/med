@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <memory>
 #include "CStorageHandler.h"
 #include "ICommand.h"
 #include "CInputHandler.h"
@@ -15,13 +16,11 @@ string prompt()
 int main()
 {
     CLogger::getInstance()->log("Entered function main()");
-    CStorageHandler storageHandler;
-    CInputHandler inputHandler(&storageHandler);;
+    CInputHandler inputHandler(make_shared<CStorageHandler>());
 
     string choice;
     while(true)
     {
-        CLogger::getInstance()->log("Entered main loop");
         cout << prompt();
         cin >> choice;
         inputHandler.process(choice);

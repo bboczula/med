@@ -1,10 +1,10 @@
 #include <vector>
 #include "CInputHandler.h"
+#include "CLogger.h"
 
 CInputHandler::~CInputHandler()
 {
-    if(!storageHandler)
-        delete storageHandler;
+    CLogger::getInstance()->log("CInputHandler() destroyed");
 }
 
 void CInputHandler::process(string commandString)
