@@ -16,7 +16,7 @@ int main()
 {
 	CStorageHandler storageHandler;
 	CInputHandler inputHandler(&storageHandler);;
-	CLogger::getInstance()->log("Entered function main()");
+    CLogger::getInstance()->log();
 
 	string choice;
 	while(true)
