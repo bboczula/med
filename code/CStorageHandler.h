@@ -32,7 +32,7 @@ public:
     }
     void printLineAt(int lineNumber)
     {
-        cout << storage->getLineAt(lineNumber) << endl;
+        std::cout << storage->getLineAt(lineNumber) << std::endl;
     }
     void setCurrentLine(int newLineNumber)
     {

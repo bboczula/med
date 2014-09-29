@@ -5,39 +5,37 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-using namespace std;
 
-class CStorage
+class CStorage : std::vector<std::string>
 {
-	vector<string> storage;
-	void readFile(string name)
+	void readFile(std::string name)
 	{
-		cout << "Reading file " << name << "..." << endl;
-		ifstream file(name.c_str());
-		string line;
+		std::cout << "Reading file " << name << "..." << std::endl;
+		std::ifstream file(name.c_str());
+		std::string line;
 		while(getline(file, line))
 		{
-			storage.push_back(line);
+			push_back(line);
 		}
 		file.close();
-		cout << storage.size() << " lines read successfully." << endl;
+		std::cout << size() << " lines read successfully." << std::endl;
 	}
 public:
-	CStorage(string filename)
+	CStorage(std::string filename)
 	{
 		readFile(filename);
 	}
-	string getLineAt(int lineNumber)
+	std::string getLineAt(int lineNumber)
 	{
         if(lineNumber < 0)
-            cerr << "ERROR001: you're trying to fetch line that doesn't exist!" << endl;
-        if(lineNumber >= storage.size())
-            cerr << "ERROR002: you're trygin to fech line out of bounds!" << endl;
-		return storage[lineNumber];
-	}
+            std::cerr << "ERROR001: you're trying to fetch line that doesn't exist!" << std::endl;
+        if(lineNumber >= size())
+            std::cerr << "ERROR002: you're trygin to fech line out of bounds!" << std::endl;
+        return operator[](lineNumber);
+    }
     int getTotalNumberOfLines()
     {
-        return storage.size();
+        return size();
     }
 };
 
