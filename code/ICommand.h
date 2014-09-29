@@ -100,9 +100,10 @@ public:
     }
     virtual void execute(shared_ptr<CStorageHandler> storage)
     {
-        for(int i = 0; i < children.size(); i++)
+        vector<ICommand*>::iterator it;
+        for(it = children.begin(); it != children.end(); it++)
         {
-            children[i]->execute(storage);
+            (*it)->execute(storage);
         }
     }
 };
