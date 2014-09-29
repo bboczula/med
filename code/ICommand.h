@@ -6,10 +6,27 @@
 #include <memory>
 #include <stdlib.h>
 
+struct CLineAddress
+{
+    bool isPresent;
+    int address;
+};
+
 class ICommand
 {
+    CLineAddress address;
 public:
-    ~ICommand()
+    ICommand()
+    {
+        address.isPresent = false;
+        address.address = 0;
+    }
+    ICommand(int lineAddress)
+    {
+        address.isPresent = true;
+        address.address = lineAddress;
+    }
+    ~ICommand() 
     {
     }
     virtual void execute(std::shared_ptr<CStorageHandler> storage) = 0;
@@ -57,6 +74,19 @@ public:
     virtual void execute(std::shared_ptr<CStorageHandler> storage)
     {
         storage->setCurrentLine(storage->getTotalNumberOfLines()-1);
+    }
+};
+
+class CSetCurrentLineCommand : public ICommand
+{
+    int newLine;
+public:
+    CSetCurrentLineCommand(int i) :  newLine(i)
+    {
+    }
+    virtual void execute(std::shared_ptr<CStorageHandler> storage)
+    {
+        storage->setCurrentLine(newLine);
     }
 };
 

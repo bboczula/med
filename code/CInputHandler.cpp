@@ -76,15 +76,25 @@ ICommand* CInputHandler::getCommand(string commandString)
             return new CQuitCommand();
         }
     }
-    else if(commandString.size() == 2)
+    else if(commandString.size() > 1)
     {
-        if(commandString == "pp")
+        std::size_t commandPosition = commandString.find_first_of("pn+-");
+        if(commandPosition == std::string::npos)
         {
-            CCommandComposite* doublePrint = new CCommandComposite();
-            doublePrint->add(new CPrintCommand());
-            doublePrint->add(new CIncrementLineCommand());
-            doublePrint->add(new CPrintCommand());
-            return doublePrint;;
+            cout << "Something went wrong!" << endl;
+        }
+        else
+        {
+            std::string mnemonic = commandString.substr(commandPosition);
+            std::string temp = commandString.substr(0, commandPosition).c_str();
+            int modifier = atoi(temp.c_str()) - 1;
+            if(mnemonic == "p")
+            {
+                CCommandComposite* printLineAt = new CCommandComposite();
+                printLineAt->add(new CSetCurrentLineCommand(modifier));
+                printLineAt->add(new CPrintCommand());
+                return printLineAt;
+            }
         }
     }
 }
