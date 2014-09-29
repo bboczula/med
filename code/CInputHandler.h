@@ -4,6 +4,7 @@
 #include "ICommand.h"
 #include <memory>
 #include "CLogger.h"
+#include "CExceptions.h"
 using namespace std;
 
 class CInputHandler
@@ -16,7 +17,7 @@ public:
         CLogger::getInstance()->log("CInputHandler() created");
     }
     ~CInputHandler();
-    void process(string commandString);
+    void process(string commandString) throw(EQuit);
 };
 
 #endif

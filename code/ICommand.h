@@ -1,6 +1,7 @@
 #ifndef I_COMMAND_H
 #define I_COMMAND_H
 #include "CStorageHandler.h"
+#include "CExceptions.h"
 #include <iostream>
 #include <memory>
 #include <stdlib.h>
@@ -82,8 +83,7 @@ class CQuitCommand : public ICommand
 public:
     virtual void execute(std::shared_ptr<CStorageHandler> storage)
     {
-        std::cout << "Bye! " << std::endl;
-        exit(0);
+        throw EQuit();
     }
 };
 

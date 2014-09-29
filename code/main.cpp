@@ -23,6 +23,14 @@ int main()
     {
         cout << prompt();
         cin >> choice;
-        inputHandler.process(choice);
+        try
+        {
+            inputHandler.process(choice);
+        }
+        catch(EQuit)
+        {
+            cout << "Goodbye!" << endl;
+            return 0;
+        }
     }
 }

@@ -1,17 +1,27 @@
 #include <vector>
 #include "CInputHandler.h"
 #include "CLogger.h"
+#include "CExceptions.h"
 
 CInputHandler::~CInputHandler()
 {
     CLogger::getInstance()->log("CInputHandler() destroyed");
 }
 
-void CInputHandler::process(string commandString)
+void CInputHandler::process(string commandString) throw(EQuit)
 {
     ICommand* cmd = getCommand(commandString);
     if(cmd)
-        cmd->execute(storageHandler);
+    {
+        try
+        {
+            cmd->execute(storageHandler);
+        }
+        catch(EQuit e)
+        {
+            throw EQuit();
+        }
+    }
 }
 
 ICommand* CInputHandler::getCommand(string commandString)
