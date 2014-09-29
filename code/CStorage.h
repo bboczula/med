@@ -10,7 +10,6 @@ using namespace std;
 class CStorage
 {
 	vector<string> storage;
-	int totalNumberOfLines;
 	void readFile(string name)
 	{
 		cout << "Reading file " << name << "..." << endl;
@@ -19,13 +18,12 @@ class CStorage
 		while(getline(file, line))
 		{
 			storage.push_back(line);
-			totalNumberOfLines++;
 		}
 		file.close();
-		cout << totalNumberOfLines << " lines read successfully." << endl;
+		cout << storage.size() << " lines read successfully." << endl;
 	}
 public:
-	CStorage(string filename) : totalNumberOfLines(0)
+	CStorage(string filename)
 	{
 		readFile(filename);
 	}
@@ -33,13 +31,13 @@ public:
 	{
         if(lineNumber < 0)
             cerr << "ERROR001: you're trying to fetch line that doesn't exist!" << endl;
-        if(lineNumber >= totalNumberOfLines)
+        if(lineNumber >= storage.size())
             cerr << "ERROR002: you're trygin to fech line out of bounds!" << endl;
 		return storage[lineNumber];
 	}
     int getTotalNumberOfLines()
     {
-        return totalNumberOfLines;
+        return storage.size();
     }
 };
 
