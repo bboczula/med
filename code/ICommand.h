@@ -89,7 +89,8 @@ public:
 
 class CCommandComposite : public ICommand
 {
-    vector<ICommand*> children;
+    typedef std::vector<ICommand*> TContainer;
+    TContainer children;
 public:
     CCommandComposite()
     {
@@ -100,8 +101,7 @@ public:
     }
     virtual void execute(shared_ptr<CStorageHandler> storage)
     {
-        vector<ICommand*>::iterator it;
-        for(it = children.begin(); it != children.end(); it++)
+        for(TContainer::iterator it = children.begin(); it != children.end(); it++)
         {
             (*it)->execute(storage);
         }
