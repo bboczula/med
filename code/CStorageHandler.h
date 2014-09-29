@@ -5,19 +5,19 @@
 
 class CStorageHandler
 {
-	CStorage* storage;
-	int currentLineNumber;
+    CStorage* storage;
+    int currentLineNumber;
 public:
-	CStorageHandler() : currentLineNumber(0)
-	{
-		CLogger::getInstance()->log("CStorageHandler() created");
-		storage = new CStorage("test1");
-	}
-	~CStorageHandler()
-	{
-		delete storage;
-		CLogger::getInstance()->log("CStorageHandler() destroyed");
-	}
+    CStorageHandler() : currentLineNumber(0)
+    {
+        CLogger::getInstance()->log("CStorageHandler() created");
+        storage = new CStorage("test1");
+    }
+    ~CStorageHandler()
+    {
+        delete storage;
+        CLogger::getInstance()->log("CStorageHandler() destroyed");
+    }
     int getCurrentLineNumber()
     {
         return currentLineNumber;
