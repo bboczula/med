@@ -32,7 +32,14 @@ public:
     }
     void printLineAt(int lineNumber)
     {
-        std::cout << storage->getLineAt(lineNumber) << std::endl;
+        try
+        {
+            std::cout << storage->getLineAt(lineNumber) << std::endl;
+        }
+        catch(std::out_of_range)
+        {
+            std::cout << "Exception was caught, called line number was " << lineNumber << std::endl;
+        }
     }
     void setCurrentLine(int newLineNumber)
     {

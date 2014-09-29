@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <stdexcept>
 
 class CStorage : std::vector<std::string>
 {
@@ -25,12 +26,12 @@ public:
 	{
 		readFile(filename);
 	}
-	std::string getLineAt(int lineNumber)
+	std::string getLineAt(int lineNumber) throw(std::out_of_range)
 	{
         if(lineNumber < 0)
-            std::cerr << "ERROR001: you're trying to fetch line that doesn't exist!" << std::endl;
+            throw std::out_of_range("ERROR001: you're trying to fetch line that doesn't exist!");
         if(lineNumber >= size())
-            std::cerr << "ERROR002: you're trygin to fech line out of bounds!" << std::endl;
+            throw std::out_of_range("ERROR002: you're trygin to fech line out of bounds!");
         return operator[](lineNumber);
     }
     int getTotalNumberOfLines()
