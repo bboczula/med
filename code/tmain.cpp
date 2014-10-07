@@ -13,103 +13,156 @@ string prompt()
 	return mode + "> ";
 }
 
-void printTestcaseStarted()
-{
-    cout << "\033[32m### TESTCASE STARTED ###\033[0m\n";
-}
-
-void printTestcaseEnded()
-{
-    cout << "\033[31m### TESTCASE ENDED ###\033[0m\n";
-}
-
 void printTestStep(string msg)
 {
     cout << "\033[34m(" + msg + ")\033[0m\n";
 }
 
-void terminateTestcase(CInputHandler* inputHandler)
+class ITestCase
 {
-    try
+private:
+    void terminateTestcase(CInputHandler* inputHandler)
     {
-        inputHandler->process("q");
+        try
+        {
+            inputHandler->process("q");
+        }
+        catch(EQuit)
+        {
+            cout << "<exception EQuit was caught>" << endl;
+            return;
+        }
     }
-    catch(EQuit)
+protected:
+    CInputHandler* inputHandler;
+    std::string name;
+public:
+    ITestCase(std::string tcName) : name(tcName), inputHandler(0)
     {
-        cout << "### TESTCASE ENDED ###" << endl;
-        return;
     }
-}
-
-void TC_BasicFunctionality()
-{
-    printTestcaseStarted();
-    CInputHandler* inputHandlerPtr = new CInputHandler(make_shared<CStorageHandler>());
-    printTestStep("go to the first line");
-    inputHandlerPtr->process("1");
-    printTestStep("print current line");
-    inputHandlerPtr->process("p");
-    printTestStep("go to the next line");
-    inputHandlerPtr->process("+");
-    printTestStep("print current line");
-    inputHandlerPtr->process("p");
-    printTestStep("go to the last line");
-    inputHandlerPtr->process("$");
-    terminateTestcase(inputHandlerPtr);
-    delete inputHandlerPtr;
-    printTestcaseEnded();
-}
-
-void TC_ToggleCurrentLine()
-{
-    printTestcaseStarted();
-    CInputHandler* inputHandlerPtr = new CInputHandler(make_shared<CStorageHandler>());
-    printTestStep("go to the first line");
-    inputHandlerPtr->process("1");
-    for(int i = 0; i < 5; i++)
+    std::string getName()
     {
+        return name;
+    }
+    virtual void execute() = 0;
+    void setup()
+    {
+        inputHandler = new CInputHandler(make_shared<CStorageHandler>());
+    }
+    void teardown()
+    {
+        terminateTestcase(inputHandler);
+        delete inputHandler;
+    }
+};
+
+class TC_BasicFunctionality : public ITestCase
+{
+public:
+    TC_BasicFunctionality() : ITestCase("TC_BasicFunctionality")
+    {
+    }
+    void execute()
+    {
+        printTestStep("go to the first line");
+        inputHandler->process("1");
+        printTestStep("print current line");
+        inputHandler->process("p");
         printTestStep("go to the next line");
-        inputHandlerPtr->process("+");
-        printTestStep("go to the previous line");
-        inputHandlerPtr->process("-");
+        inputHandler->process("+");
+        printTestStep("print current line");
+        inputHandler->process("p");
+        printTestStep("go to the last line");
+        inputHandler->process("$");
     }
-    terminateTestcase(inputHandlerPtr);
-    delete inputHandlerPtr;
-    printTestcaseEnded();
-}
+};
 
-void TC_GoBeforeTheFirstLine()
+class TC_ToggleCurrentLine : public ITestCase
 {
-    printTestcaseStarted();
-    CInputHandler* inputHandlerPtr = new CInputHandler(make_shared<CStorageHandler>());
-    printTestStep("go to the first line");
-    inputHandlerPtr->process("1");
-    printTestStep("go before the first line");
-    inputHandlerPtr->process("-");
-    printTestStep("go before the first line");
-    inputHandlerPtr->process("-");
-    printTestStep("print current line");
-    inputHandlerPtr->process("p");
-    printTestStep("go to the next line");
-    inputHandlerPtr->process("+");
-    printTestStep("go to the previous line");
-    inputHandlerPtr->process("-");
-    printTestStep("go before the first line");
-    inputHandlerPtr->process("-");
-    printTestStep("print current line");
-    inputHandlerPtr->process("p");
-    terminateTestcase(inputHandlerPtr);
-    delete inputHandlerPtr;
-    printTestcaseEnded();
-}
+public:
+    TC_ToggleCurrentLine() : ITestCase("TC_ToggleCurrentLine")
+    {
+    }
+    void execute()
+    {
+        printTestStep("go to the first line");
+        inputHandler->process("1");
+        for(int i = 0; i < 5; i++)
+        {
+            printTestStep("go to the next line");
+            inputHandler->process("+");
+            printTestStep("go to the previous line");
+            inputHandler->process("-");
+        }
+    }
+};
+
+class TC_GoBeforeTheFirstLine : public ITestCase
+{
+public:
+    TC_GoBeforeTheFirstLine() : ITestCase("TC_GoBeforeTheFirstLine")
+    {
+    }
+    void execute()
+    {
+        printTestStep("go to the first line");
+        inputHandler->process("1");
+        printTestStep("go before the first line");
+        inputHandler->process("-");
+        printTestStep("go before the first line");
+        inputHandler->process("-");
+        printTestStep("print current line");
+        inputHandler->process("p");
+        printTestStep("go to the next line");
+        inputHandler->process("+");
+        printTestStep("go to the previous line");
+        inputHandler->process("-");
+        printTestStep("go before the first line");
+        inputHandler->process("-");
+        printTestStep("print current line");
+        inputHandler->process("p");
+    }
+};
+
+class CTestSuite
+{
+    std::vector<ITestCase*> testcases;
+    void printTestcaseStarted(std::string tcName)
+    {
+        cout << "\033[32m### TESTCASE " << tcName << " STARTED ###\033[0m\n";
+    }
+    void printTestcaseEnded()
+    {
+        cout << "\033[31m### TESTCASE ENDED ###\033[0m\n";
+    }
+public:
+    void add(ITestCase* tc)
+    {
+        testcases.push_back(tc);
+    }
+    void run()
+    {
+        for(int i = 0; i < testcases.size(); ++i)
+        {
+            printTestcaseStarted(testcases[i]->getName());
+            testcases[i]->setup();
+            testcases[i]->execute();
+            testcases[i]->teardown();
+            printTestcaseEnded();
+        }
+    }
+    CTestSuite()
+    {
+        for(int i = 0; i < testcases.size(); ++i)
+            delete testcases[i];
+    }
+};
 
 int main()
 {
-    CLogger::getInstance()->log("Entered function main()");
-    CInputHandler inputHandler(make_shared<CStorageHandler>());
-
-    // Test1
-    TC_BasicFunctionality();
-    TC_ToggleCurrentLine();
-    TC_GoBeforeTheFirstLine();
+    CTestSuite generalTestSuite;
+    generalTestSuite.add(new TC_BasicFunctionality);
+    generalTestSuite.add(new TC_ToggleCurrentLine());
+    generalTestSuite.add(new TC_GoBeforeTheFirstLine());
+    generalTestSuite.run();
 }
