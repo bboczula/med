@@ -45,6 +45,8 @@ void TC_BasicFunctionality()
 {
     printTestcaseStarted();
     CInputHandler* inputHandlerPtr = new CInputHandler(make_shared<CStorageHandler>());
+    printTestStep("go to the first line");
+    inputHandlerPtr->process("1");
     printTestStep("print current line");
     inputHandlerPtr->process("p");
     printTestStep("go to the next line");
@@ -62,6 +64,8 @@ void TC_ToggleCurrentLine()
 {
     printTestcaseStarted();
     CInputHandler* inputHandlerPtr = new CInputHandler(make_shared<CStorageHandler>());
+    printTestStep("go to the first line");
+    inputHandlerPtr->process("1");
     for(int i = 0; i < 5; i++)
     {
         printTestStep("go to the next line");
@@ -78,6 +82,8 @@ void TC_GoBeforeTheFirstLine()
 {
     printTestcaseStarted();
     CInputHandler* inputHandlerPtr = new CInputHandler(make_shared<CStorageHandler>());
+    printTestStep("go to the first line");
+    inputHandlerPtr->process("1");
     printTestStep("go before the first line");
     inputHandlerPtr->process("-");
     terminateTestcase(inputHandlerPtr);

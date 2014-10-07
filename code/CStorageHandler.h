@@ -12,6 +12,7 @@ public:
     {
         CLogger::getInstance()->log("CStorageHandler() created");
         storage = new CStorage("test1");
+        currentLineNumber = getTotalNumberOfLines() - 1;
     }
     ~CStorageHandler()
     {
