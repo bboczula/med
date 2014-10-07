@@ -86,6 +86,18 @@ void TC_GoBeforeTheFirstLine()
     inputHandlerPtr->process("1");
     printTestStep("go before the first line");
     inputHandlerPtr->process("-");
+    printTestStep("go before the first line");
+    inputHandlerPtr->process("-");
+    printTestStep("print current line");
+    inputHandlerPtr->process("p");
+    printTestStep("go to the next line");
+    inputHandlerPtr->process("+");
+    printTestStep("go to the previous line");
+    inputHandlerPtr->process("-");
+    printTestStep("go before the first line");
+    inputHandlerPtr->process("-");
+    printTestStep("print current line");
+    inputHandlerPtr->process("p");
     terminateTestcase(inputHandlerPtr);
     delete inputHandlerPtr;
     printTestcaseEnded();

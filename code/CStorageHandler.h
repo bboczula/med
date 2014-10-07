@@ -2,6 +2,7 @@
 #define C_STORAGE_HANDLER_H
 #include "CStorage.h"
 #include "CLogger.h"
+#include "CExceptions.h"
 
 class CStorageHandler
 {
@@ -50,9 +51,12 @@ public:
     {
         currentLineNumber++;
     }
-    void decrementLine()
+    void decrementLine() throw(ETryToMoveOutOfFile)
     {
-        currentLineNumber--;
+        if(currentLineNumber > 0)
+            currentLineNumber--;
+        else
+            throw ETryToMoveOutOfFile();
     }
     void printAround()
     {

@@ -5,4 +5,8 @@ class EQuit
 {
 };
 
+class ETryToMoveOutOfFile
+{
+};
+
 #endif

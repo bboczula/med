@@ -53,7 +53,15 @@ ICommand* CInputHandler::getCommand(string commandString)
         if(commandString == "-")
         {
             CCommandComposite* decrementAndPrint = new CCommandComposite();
-            decrementAndPrint->add(new CDecrementLineCommand());
+            try
+            {
+                decrementAndPrint->add(new CDecrementLineCommand(storageHandler));
+            }
+            catch(ETryToMoveOutOfFile)
+            {
+                cout << "?" << endl;
+                return 0;
+            }
             decrementAndPrint->add(new CPrintCommand());
             return decrementAndPrint;
         }
