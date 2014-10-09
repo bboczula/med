@@ -18,6 +18,7 @@ void printTestStep(string msg)
     cout << "\033[34m(" + msg + ")\033[0m\n";
 }
 
+
 class ITestCase
 {
 private:
@@ -54,6 +55,11 @@ public:
         terminateTestcase(inputHandler);
         delete inputHandler;
     }
+    void executeCommand(string cmd, string description)
+    {
+            printTestStep(description);
+            inputHandler->process(cmd);
+    }
 };
 
 class TC_BasicFunctionality : public ITestCase
@@ -64,16 +70,11 @@ public:
     }
     void execute()
     {
-        printTestStep("go to the first line");
-        inputHandler->process("1");
-        printTestStep("print current line");
-        inputHandler->process("p");
-        printTestStep("go to the next line");
-        inputHandler->process("+");
-        printTestStep("print current line");
-        inputHandler->process("p");
-        printTestStep("go to the last line");
-        inputHandler->process("$");
+        executeCommand("1", "go to the first line");
+        executeCommand("p", "print current line");
+        executeCommand("+", "go to the next line");
+        executeCommand("p", "print current line");
+        executeCommand("$", "go to the last line");
     }
 };
 
@@ -85,14 +86,11 @@ public:
     }
     void execute()
     {
-        printTestStep("go to the first line");
-        inputHandler->process("1");
+        executeCommand("1", "go to the first line");
         for(int i = 0; i < 5; i++)
         {
-            printTestStep("go to the next line");
-            inputHandler->process("+");
-            printTestStep("go to the previous line");
-            inputHandler->process("-");
+            executeCommand("+", "go to the next line");
+            executeCommand("-", "go to the previous line");
         }
     }
 };
@@ -105,45 +103,31 @@ public:
     }
     void execute()
     {
-        printTestStep("go to the first line");
-        inputHandler->process("1");
-        printTestStep("go before the first line");
-        inputHandler->process("-");
-        printTestStep("go before the first line");
-        inputHandler->process("-");
-        printTestStep("print current line");
-        inputHandler->process("p");
-        printTestStep("go to the next line");
-        inputHandler->process("+");
-        printTestStep("go to the previous line");
-        inputHandler->process("-");
-        printTestStep("go before the first line");
-        inputHandler->process("-");
-        printTestStep("print current line");
-        inputHandler->process("p");
+        executeCommand("1", "go to the first line");
+        executeCommand("-", "go before the first line");
+        executeCommand("-", "go before the first line");
+        executeCommand("p", "print current line");
+        executeCommand("+", "go to the next line");
+        executeCommand("-", "go to the previous line");
+        executeCommand("-", "go before the first line");
+        executeCommand("p", "print current line");
     }
 };
 
-class TC_DoubleCommands : public ITestCase
+class TC_BasicDoublePrintCommand : public ITestCase
 {
 public:
-    TC_DoubleCommands() : ITestCase("TC_DoubleCommands")
+    TC_BasicDoublePrintCommand() : ITestCase("TC_BasicDoublePrintCommand")
     {
     }
     void execute()
     {
-        printTestStep("print first line");
-        inputHandler->process("1p");
-        printTestStep("print second line");
-        inputHandler->process("2p");
-        printTestStep("print third line");
-        inputHandler->process("3p");
-        printTestStep("print third line");
-        inputHandler->process("3p");
-        printTestStep("print second line");
-        inputHandler->process("2p");
-        printTestStep("print current line");
-        inputHandler->process("p");
+        executeCommand("1p", "print first line");
+        executeCommand("2p", "print second line");
+        executeCommand("3p", "print third line");
+        executeCommand("3p", "print third line");
+        executeCommand("2p", "print second line");
+        executeCommand("p", "print current line");
     }
 };
 
@@ -187,6 +171,6 @@ int main()
     generalTestSuite.add(new TC_BasicFunctionality);
     generalTestSuite.add(new TC_ToggleCurrentLine());
     generalTestSuite.add(new TC_GoBeforeTheFirstLine());
-    generalTestSuite.add(new TC_DoubleCommands());
+    generalTestSuite.add(new TC_BasicDoublePrintCommand());
     generalTestSuite.run();
 }
