@@ -124,6 +124,29 @@ public:
     }
 };
 
+class TC_DoubleCommands : public ITestCase
+{
+public:
+    TC_DoubleCommands() : ITestCase("TC_DoubleCommands")
+    {
+    }
+    void execute()
+    {
+        printTestStep("print first line");
+        inputHandler->process("1p");
+        printTestStep("print second line");
+        inputHandler->process("2p");
+        printTestStep("print third line");
+        inputHandler->process("3p");
+        printTestStep("print third line");
+        inputHandler->process("3p");
+        printTestStep("print second line");
+        inputHandler->process("2p");
+        printTestStep("print current line");
+        inputHandler->process("p");
+    }
+};
+
 class CTestSuite
 {
     std::vector<ITestCase*> testcases;
@@ -164,5 +187,6 @@ int main()
     generalTestSuite.add(new TC_BasicFunctionality);
     generalTestSuite.add(new TC_ToggleCurrentLine());
     generalTestSuite.add(new TC_GoBeforeTheFirstLine());
+    generalTestSuite.add(new TC_DoubleCommands());
     generalTestSuite.run();
 }
