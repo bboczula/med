@@ -26,31 +26,55 @@ void CInputHandler::process(string commandString) throw(EQuit)
 
 ICommand* CInputHandler::getCommand(string commandString)
 {
-    if(commandString.size() == 1)
+    std::size_t commandPosition = commandString.find_first_of("p.nP+-1$q");
+    if(commandPosition == std::string::npos)
     {
-        if(commandString == "p" || commandString == ".")
+        cout << "Something went wrong!" << endl;
+    }
+    else
+    {
+        std::string mnemonic = commandString.substr(commandPosition);
+        std::string temp = commandString.substr(0, commandPosition).c_str();
+        bool isModifierPresent = false;
+        int modifier = 0;
+        if(temp.size())
         {
-            return new CPrintCommand();
+            isModifierPresent = true;
+            modifier = atoi(temp.c_str()) - 1;
         }
-        if(commandString == "n")
+        if(mnemonic == "p" || mnemonic == ".")
+        {
+            if(isModifierPresent)
+            {
+                CCommandComposite* goToLineAndPrint = new CCommandComposite();
+                goToLineAndPrint->add(new CSetCurrentLineCommand(modifier));
+                goToLineAndPrint->add(new CPrintCommand());
+                return goToLineAndPrint;
+            }
+            else
+            {
+                return new CPrintCommand();
+            }
+        }
+        if(mnemonic == "n")
         {
             CCommandComposite* printWithLineNumber = new CCommandComposite();
             printWithLineNumber->add(new CPrintLineNumberCommand());
             printWithLineNumber->add(new CPrintCommand());
             return printWithLineNumber;
         }
-        if(commandString == "P")
+        if(mnemonic == "P")
         {
             return new CPrintAroundCommand();
         }
-        if(commandString == "+")
+        if(mnemonic == "+")
         {
             CCommandComposite* incrementAndPrint = new CCommandComposite();
             incrementAndPrint->add(new CIncrementLineCommand());
             incrementAndPrint->add(new CPrintCommand());
             return incrementAndPrint;
         }
-        if(commandString == "-")
+        if(mnemonic == "-")
         {
             CCommandComposite* decrementAndPrint = new CCommandComposite();
             try
@@ -65,44 +89,23 @@ ICommand* CInputHandler::getCommand(string commandString)
             decrementAndPrint->add(new CPrintCommand());
             return decrementAndPrint;
         }
-        if(commandString == "1")
+        if(mnemonic == "1")
         {
             CCommandComposite* goToFirstLineAndPrint = new CCommandComposite();
             goToFirstLineAndPrint->add(new CFirstLineCommand());
             goToFirstLineAndPrint->add(new CPrintCommand());
             return goToFirstLineAndPrint;;
         }
-        if(commandString == "$")
+        if(mnemonic == "$")
         {
             CCommandComposite* goToLastLineAndPrint = new CCommandComposite();
             goToLastLineAndPrint->add(new CLastLineCommand());
             goToLastLineAndPrint->add(new CPrintCommand());
             return goToLastLineAndPrint;
         }
-        if(commandString == "q")
+        if(mnemonic == "q")
         {
             return new CQuitCommand();
-        }
-    }
-    else if(commandString.size() > 1)
-    {
-        std::size_t commandPosition = commandString.find_first_of("pn+-");
-        if(commandPosition == std::string::npos)
-        {
-            cout << "Something went wrong!" << endl;
-        }
-        else
-        {
-            std::string mnemonic = commandString.substr(commandPosition);
-            std::string temp = commandString.substr(0, commandPosition).c_str();
-            int modifier = atoi(temp.c_str()) - 1;
-            if(mnemonic == "p")
-            {
-                CCommandComposite* printLineAt = new CCommandComposite();
-                printLineAt->add(new CSetCurrentLineCommand(modifier));
-                printLineAt->add(new CPrintCommand());
-                return printLineAt;
-            }
         }
     }
 }
