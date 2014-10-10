@@ -26,7 +26,7 @@ void CInputHandler::process(string commandString) throw(EQuit)
 
 ICommand* CInputHandler::getCommand(string commandString)
 {
-    std::size_t commandPosition = commandString.find_first_of("p.nP+-1$q");
+    std::size_t commandPosition = commandString.find_first_of("p.nP+-$q");
     if(commandPosition == std::string::npos)
     {
         cout << "Something went wrong!" << endl;
@@ -59,6 +59,10 @@ ICommand* CInputHandler::getCommand(string commandString)
         if(mnemonic == "n")
         {
             CCommandComposite* printWithLineNumber = new CCommandComposite();
+            if(isModifierPresent)
+            {
+                printWithLineNumber->add(new CSetCurrentLineCommand(modifier));
+            }
             printWithLineNumber->add(new CPrintLineNumberCommand());
             printWithLineNumber->add(new CPrintCommand());
             return printWithLineNumber;

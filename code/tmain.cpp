@@ -131,6 +131,23 @@ public:
     }
 };
 
+class TC_BasicDoublePrintWithNumberCommand : public ITestCase
+{
+public:
+    TC_BasicDoublePrintWithNumberCommand() : ITestCase("TC_BasicDoublePrintWithNumberCommand")
+    {
+    }
+    void execute()
+    {
+        executeCommand("1n", "print first line");
+        executeCommand("2n", "print second line");
+        executeCommand("3n", "print third line");
+        executeCommand("3n", "print third line");
+        executeCommand("2n", "print second line");
+        executeCommand("n", "print current line");
+    }
+};
+
 class CTestSuite
 {
     std::vector<ITestCase*> testcases;
@@ -172,5 +189,6 @@ int main()
     generalTestSuite.add(new TC_ToggleCurrentLine());
     generalTestSuite.add(new TC_GoBeforeTheFirstLine());
     generalTestSuite.add(new TC_BasicDoublePrintCommand());
+    generalTestSuite.add(new TC_BasicDoublePrintWithNumberCommand());
     generalTestSuite.run();
 }
