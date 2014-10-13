@@ -1,4 +1,4 @@
-OBJS = CClock.o CLogger.o CInputHandler.o
+OBJS = CClock.o CLogger.o CInputHandler.o CParser.o
 OBJS_REL = main.o
 OBJS_MT = tmain.o
 
@@ -24,6 +24,9 @@ CLogger.o : CLogger.h CLogger.cpp
 
 CInputHandler.o : CInputHandler.h CInputHandler.cpp CLogger.h CExceptions.h
 	g++ -std=c++11 -c CInputHandler.cpp
+
+CParser.o : CParser.cpp CParser.h SCommonStructures.h
+	g++ -std=c++11 -c CParser.cpp
 
 .PHONY : clean
 clean :
