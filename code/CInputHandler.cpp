@@ -2,6 +2,7 @@
 #include "CInputHandler.h"
 #include "CLogger.h"
 #include "CExceptions.h"
+#include "CParser.h"
 
 CInputHandler::~CInputHandler()
 {
@@ -27,89 +28,76 @@ void CInputHandler::process(string commandString) throw(EQuit)
 ICommand* CInputHandler::getCommand(string commandString)
 {
     std::size_t commandPosition = commandString.find_first_of("p.nP+-$q");
-    if(commandPosition == std::string::npos)
+    CParser parser;
+    CCommandMetadata* cmd = parser.parse(commandString);
+
+    if(cmd->command.value == "p" || cmd->command.value == ".")
     {
-        cout << "Something went wrong!" << endl;
+        if(cmd->startAddress.isPresent)
+        {
+            CCommandComposite* goToLineAndPrint = new CCommandComposite();
+            goToLineAndPrint->add(new CSetCurrentLineCommand(cmd->startAddress.value));
+            goToLineAndPrint->add(new CPrintCommand());
+            return goToLineAndPrint;
+        }
+        else
+        {
+            return new CPrintCommand();
+        }
     }
-    else
+    if(cmd->command.value == "n")
     {
-        std::string mnemonic = commandString.substr(commandPosition);
-        std::string temp = commandString.substr(0, commandPosition).c_str();
-        bool isModifierPresent = false;
-        int modifier = 0;
-        if(temp.size())
+        CCommandComposite* printWithLineNumber = new CCommandComposite();
+        if(cmd->startAddress.isPresent)
         {
-            isModifierPresent = true;
-            modifier = atoi(temp.c_str()) - 1;
+            printWithLineNumber->add(new CSetCurrentLineCommand(cmd->startAddress.value));
         }
-        if(mnemonic == "p" || mnemonic == ".")
+        printWithLineNumber->add(new CPrintLineNumberCommand());
+        printWithLineNumber->add(new CPrintCommand());
+        return printWithLineNumber;
+    }
+    if(cmd->command.value == "P")
+    {
+        return new CPrintAroundCommand();
+    }
+    if(cmd->command.value == "+")
+    {
+        CCommandComposite* incrementAndPrint = new CCommandComposite();
+        incrementAndPrint->add(new CIncrementLineCommand());
+        incrementAndPrint->add(new CPrintCommand());
+        return incrementAndPrint;
+    }
+    if(cmd->command.value == "-")
+    {
+        CCommandComposite* decrementAndPrint = new CCommandComposite();
+        try
         {
-            if(isModifierPresent)
-            {
-                CCommandComposite* goToLineAndPrint = new CCommandComposite();
-                goToLineAndPrint->add(new CSetCurrentLineCommand(modifier));
-                goToLineAndPrint->add(new CPrintCommand());
-                return goToLineAndPrint;
-            }
-            else
-            {
-                return new CPrintCommand();
-            }
+            decrementAndPrint->add(new CDecrementLineCommand(storageHandler));
         }
-        if(mnemonic == "n")
+        catch(ETryToMoveOutOfFile)
         {
-            CCommandComposite* printWithLineNumber = new CCommandComposite();
-            if(isModifierPresent)
-            {
-                printWithLineNumber->add(new CSetCurrentLineCommand(modifier));
-            }
-            printWithLineNumber->add(new CPrintLineNumberCommand());
-            printWithLineNumber->add(new CPrintCommand());
-            return printWithLineNumber;
+            cout << "?" << endl;
+            return 0;
         }
-        if(mnemonic == "P")
-        {
-            return new CPrintAroundCommand();
-        }
-        if(mnemonic == "+")
-        {
-            CCommandComposite* incrementAndPrint = new CCommandComposite();
-            incrementAndPrint->add(new CIncrementLineCommand());
-            incrementAndPrint->add(new CPrintCommand());
-            return incrementAndPrint;
-        }
-        if(mnemonic == "-")
-        {
-            CCommandComposite* decrementAndPrint = new CCommandComposite();
-            try
-            {
-                decrementAndPrint->add(new CDecrementLineCommand(storageHandler));
-            }
-            catch(ETryToMoveOutOfFile)
-            {
-                cout << "?" << endl;
-                return 0;
-            }
-            decrementAndPrint->add(new CPrintCommand());
-            return decrementAndPrint;
-        }
-        if(mnemonic == "1")
-        {
-            CCommandComposite* goToFirstLineAndPrint = new CCommandComposite();
-            goToFirstLineAndPrint->add(new CFirstLineCommand());
-            goToFirstLineAndPrint->add(new CPrintCommand());
-            return goToFirstLineAndPrint;;
-        }
-        if(mnemonic == "$")
-        {
-            CCommandComposite* goToLastLineAndPrint = new CCommandComposite();
-            goToLastLineAndPrint->add(new CLastLineCommand());
-            goToLastLineAndPrint->add(new CPrintCommand());
-            return goToLastLineAndPrint;
-        }
-        if(mnemonic == "q")
-        {
-            return new CQuitCommand();
-        }
+        decrementAndPrint->add(new CPrintCommand());
+        return decrementAndPrint;
+    }
+    if(cmd->command.value == "1")
+    {
+        CCommandComposite* goToFirstLineAndPrint = new CCommandComposite();
+        goToFirstLineAndPrint->add(new CFirstLineCommand());
+        goToFirstLineAndPrint->add(new CPrintCommand());
+        return goToFirstLineAndPrint;;
+    }
+    if(cmd->command.value == "$")
+    {
+        CCommandComposite* goToLastLineAndPrint = new CCommandComposite();
+        goToLastLineAndPrint->add(new CLastLineCommand());
+        goToLastLineAndPrint->add(new CPrintCommand());
+        return goToLastLineAndPrint;
+    }
+    if(cmd->command.value == "q")
+    {
+        return new CQuitCommand();
     }
 }

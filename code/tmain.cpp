@@ -148,6 +148,22 @@ public:
     }
 };
 
+class TC_MovingOnlyWithNumbers : public ITestCase
+{
+public:
+    TC_MovingOnlyWithNumbers() : ITestCase("TC_MovingOnlyWithNumbers")
+    {
+    }
+    void execute()
+    {
+        executeCommand("1", "print first line");
+        executeCommand("2", "print second line");
+        executeCommand("3", "print third line");
+        executeCommand("4", "print third line");
+        executeCommand("5", "print third line");
+    }
+};
+
 class CTestSuite
 {
     std::vector<ITestCase*> testcases;
@@ -190,5 +206,6 @@ int main()
     generalTestSuite.add(new TC_GoBeforeTheFirstLine());
     generalTestSuite.add(new TC_BasicDoublePrintCommand());
     generalTestSuite.add(new TC_BasicDoublePrintWithNumberCommand());
+    generalTestSuite.add(new TC_MovingOnlyWithNumbers());
     generalTestSuite.run();
 }
