@@ -120,14 +120,16 @@ public:
 class CDecrementLineCommand : public ICommand
 {
 public:
-    CDecrementLineCommand(std::shared_ptr<CStorageHandler> storage) throw (ETryToMoveOutOfFile)
-    {
-        if(storage->getCurrentLineNumber() == 0)
-            throw ETryToMoveOutOfFile();
-    }
     virtual void execute(std::shared_ptr<CStorageHandler> storage)
     {
-        storage->decrementLine();
+        try
+        {
+            storage->decrementLine();
+        }
+        catch(ETryToMoveOutOfFile)
+        {
+            std::cout << "?" << std::endl;
+        }
     }
 };
 

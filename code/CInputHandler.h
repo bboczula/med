@@ -1,6 +1,7 @@
 #ifndef C_INPUT_HANDLER_H
 #define C_INPUT_HANDLER_H
 #include "CStorageHandler.h"
+#include "CCommandFactory.h"
 #include "ICommand.h"
 #include <memory>
 #include "CLogger.h"
@@ -10,9 +11,10 @@ using namespace std;
 class CInputHandler
 {
     shared_ptr<CStorageHandler> storageHandler;
+    shared_ptr<CCommandFactory> commandFactory;
     ICommand* getCommand(string commandString);
 public:
-    CInputHandler(const shared_ptr<CStorageHandler>& s) : storageHandler(s)
+    CInputHandler(const shared_ptr<CStorageHandler>& sh, shared_ptr<CCommandFactory> cf) : storageHandler(sh), commandFactory(cf)
     {
         CLogger::getInstance()->log("CInputHandler() created");
     }

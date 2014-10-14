@@ -2,6 +2,7 @@
 #include <string>
 #include <memory>
 #include "CStorageHandler.h"
+#include "CCommandFactory.h"
 #include "ICommand.h"
 #include "CInputHandler.h"
 #include "CLogger.h"
@@ -16,7 +17,7 @@ string prompt()
 int main()
 {
     CLogger::getInstance()->log("Entered function main()");
-    CInputHandler inputHandler(make_shared<CStorageHandler>());
+    CInputHandler inputHandler(make_shared<CStorageHandler>(), make_shared<CCommandFactory>());
 
     string choice;
     while(true)

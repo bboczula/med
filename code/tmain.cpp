@@ -2,6 +2,7 @@
 #include <string>
 #include <memory>
 #include "CStorageHandler.h"
+#include "CCommandFactory.h"
 #include "ICommand.h"
 #include "CInputHandler.h"
 #include "CLogger.h"
@@ -48,7 +49,7 @@ public:
     virtual void execute() = 0;
     void setup()
     {
-        inputHandler = new CInputHandler(make_shared<CStorageHandler>());
+        inputHandler = new CInputHandler(make_shared<CStorageHandler>(), make_shared<CCommandFactory>());
     }
     void teardown()
     {
