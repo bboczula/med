@@ -37,7 +37,14 @@ class CPrintCommand : public ICommand
 public:
     virtual void execute(std::shared_ptr<CStorageHandler> storage)
     {
-        storage->printCurrentLine();
+        try
+        {
+            storage->printCurrentLine();
+        }
+        catch(EInvalidAddress)
+        {
+            throw EInvalidAddress();
+        }
     }
 };
 

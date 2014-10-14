@@ -8,6 +8,10 @@ class CStorageHandler
 {
     CStorage* storage;
     int currentLineNumber;
+    bool isInRange(int n)
+    {
+        return ((n < 0) || (n > storage->getTotalNumberOfLines()));
+    }
 public:
     CStorageHandler() : currentLineNumber(0)
     {
@@ -30,17 +34,19 @@ public:
     }
     void printCurrentLine()
     {
+        if(!isInRange(currentLineNumber))
+            throw EInvalidAddress();
         printLineAt(currentLineNumber);
     }
-    void printLineAt(int lineNumber)
+    void printLineAt(int n)
     {
         try
         {
-            std::cout << storage->getLineAt(lineNumber) << std::endl;
+            std::cout << storage->getLineAt(n) << std::endl;
         }
         catch(std::out_of_range)
         {
-            std::cout << "Exception was caught, called line number was " << lineNumber << std::endl;
+            std::cout << "Exception was caught, called line number was " << n << std::endl;
         }
     }
     void setCurrentLine(int newLineNumber)

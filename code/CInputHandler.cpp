@@ -22,6 +22,9 @@ void CInputHandler::process(string commandString) throw(EQuit)
         {
             throw EQuit();
         }
+        catch(EInvalidAddress e)
+        {
+        }
     }
 }
 

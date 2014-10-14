@@ -9,4 +9,8 @@ class ETryToMoveOutOfFile
 {
 };
 
+class EInvalidAddress
+{
+};
+
 #endif
