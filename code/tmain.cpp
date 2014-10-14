@@ -164,6 +164,22 @@ public:
     }
 };
 
+class TC_BasicRangePrinting : public ITestCase
+{
+public:
+    TC_BasicRangePrinting() : ITestCase("TC_BasicRangePrinting")
+    {
+    }
+    void execute()
+    {
+        executeCommand("1,1", "print first line");
+        executeCommand("1,3", "print firts three lines");
+        executeCommand("1,6p", "print entire file");
+        executeCommand("4,6p", "print last three lines");
+        executeCommand("p", "print current line");
+    }
+};
+
 class CTestSuite
 {
     std::vector<ITestCase*> testcases;
@@ -207,5 +223,6 @@ int main()
     generalTestSuite.add(new TC_BasicDoublePrintCommand());
     generalTestSuite.add(new TC_BasicDoublePrintWithNumberCommand());
     generalTestSuite.add(new TC_MovingOnlyWithNumbers());
+    generalTestSuite.add(new TC_BasicRangePrinting());
     generalTestSuite.run();
 }

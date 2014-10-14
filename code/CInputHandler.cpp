@@ -27,7 +27,6 @@ void CInputHandler::process(string commandString) throw(EQuit)
 
 ICommand* CInputHandler::getCommand(string commandString)
 {
-    std::size_t commandPosition = commandString.find_first_of("p.nP+-$q");
     CParser parser;
     CCommandMetadata* cmd = parser.parse(commandString);
 
@@ -35,10 +34,17 @@ ICommand* CInputHandler::getCommand(string commandString)
     {
         if(cmd->startAddress.isPresent)
         {
-            CCommandComposite* goToLineAndPrint = new CCommandComposite();
-            goToLineAndPrint->add(new CSetCurrentLineCommand(cmd->startAddress.value));
-            goToLineAndPrint->add(new CPrintCommand());
-            return goToLineAndPrint;
+            if(cmd->endAddress.isPresent)
+            {
+                return new CPrintRangeCommand(cmd->startAddress.value, cmd->endAddress.value);
+            }
+            else
+            {
+                CCommandComposite* goToLineAndPrint = new CCommandComposite();
+                goToLineAndPrint->add(new CSetCurrentLineCommand(cmd->startAddress.value));
+                goToLineAndPrint->add(new CPrintCommand());
+                return goToLineAndPrint;
+            }
         }
         else
         {

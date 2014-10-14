@@ -41,6 +41,24 @@ public:
     }
 };
 
+class CPrintRangeCommand : public ICommand
+{
+    int startRange;
+    int endRange;
+public:
+    CPrintRangeCommand(int start, int end) : startRange(start), endRange(end)
+    {
+    }
+    virtual void execute(std::shared_ptr<CStorageHandler> storage)
+    {
+        for(int i = startRange; i <= endRange; i++)
+        {
+            storage->setCurrentLine(i);
+            storage->printCurrentLine();
+        }
+    }
+};
+
 class CPrintLineNumberCommand : public ICommand
 {
 public:
