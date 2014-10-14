@@ -13,9 +13,9 @@ string prompt()
 	return mode + "> ";
 }
 
-void printTestStep(string msg)
+void printTestStep(string cmd, string msg)
 {
-    cout << "\033[34m(" + msg + ")\033[0m\n";
+    cout << "\033[34m[" << cmd << "](" + msg + ")\033[0m\n";
 }
 
 
@@ -57,7 +57,7 @@ public:
     }
     void executeCommand(string cmd, string description)
     {
-            printTestStep(description);
+            printTestStep(cmd, description);
             inputHandler->process(cmd);
     }
 };
