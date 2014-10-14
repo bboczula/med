@@ -12,10 +12,7 @@ ICommand* CCommandFactory::getCommand(CCommandMetadata* metadata)
             }
             else
             {
-                CCommandComposite* goToLineAndPrint = new CCommandComposite();
-                goToLineAndPrint->add(new CSetCurrentLineCommand(metadata->startAddress.value));
-                goToLineAndPrint->add(new CPrintCommand());
-                return goToLineAndPrint;
+                return new CPrintRangeCommand(metadata->startAddress.value, metadata->startAddress.value);
             }
         }
         else

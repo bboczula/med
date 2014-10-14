@@ -41,6 +41,19 @@ public:
     }
 };
 
+class CPrintLineAtCommand : public ICommand
+{
+    int lineToPrint;
+public:
+    CPrintLineAtCommand(int n) : lineToPrint(n)
+    {
+    }
+    virtual void execute(std::shared_ptr<CStorageHandler> storage)
+    {
+        storage->printLineAt(lineToPrint);
+    }
+};
+
 class CPrintRangeCommand : public ICommand
 {
     int startRange;

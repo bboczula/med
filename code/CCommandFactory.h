@@ -4,6 +4,7 @@
 #include "SCommonStructures.h"
 class CCommandFactory
 {
+    int currentLine;
 public:
     ICommand* getCommand(CCommandMetadata* metadata);
 };
