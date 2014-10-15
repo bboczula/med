@@ -13,6 +13,7 @@ class CInputHandler
     shared_ptr<CStorageHandler> storageHandler;
     shared_ptr<CCommandFactory> commandFactory;
     ICommand* getCommand(string commandString);
+    bool isValid(CCommandMetadata* cmd);
 public:
     CInputHandler(const shared_ptr<CStorageHandler>& sh, shared_ptr<CCommandFactory> cf) : storageHandler(sh), commandFactory(cf)
     {

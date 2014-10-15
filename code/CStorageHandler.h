@@ -8,10 +8,6 @@ class CStorageHandler
 {
     CStorage* storage;
     int currentLineNumber;
-    bool isInRange(int n)
-    {
-        return ((n < 0) || (n > storage->getTotalNumberOfLines()));
-    }
 public:
     CStorageHandler() : currentLineNumber(0)
     {
@@ -34,8 +30,8 @@ public:
     }
     void printCurrentLine()
     {
-        if(!isInRange(currentLineNumber))
-            throw EInvalidAddress();
+        //if(!isInRange(currentLineNumber))
+        //    throw EInvalidAddress();
         printLineAt(currentLineNumber);
     }
     void printLineAt(int n)
@@ -73,6 +69,14 @@ public:
         if(currentLineNumber + 1 < storage->getTotalNumberOfLines())
             printLineAt(currentLineNumber+1);
     };
+    bool isInRange(int address)
+    {
+        if(address < 0)
+            return false;
+        if(address >= storage->getTotalNumberOfLines())
+            return false;
+        return true;
+    }
 };
 
 #endif

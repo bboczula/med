@@ -181,6 +181,23 @@ public:
     }
 };
 
+class TC_InvalidRangePrinting : public ITestCase
+{
+public:
+    TC_InvalidRangePrinting() : ITestCase("TC_InvalidRangePrinting")
+    {
+    }
+    void execute()
+    {
+        executeCommand("1,1", "print first line");
+        executeCommand("1,6", "print entire file");
+        executeCommand("1,7p", "second parameter out of range");
+        executeCommand("8,9p", "both parameters out of range");
+        executeCommand("0", "trying to print line 0");
+        executeCommand("10", "trying to print non-exiting line");
+    }
+};
+
 class CTestSuite
 {
     std::vector<ITestCase*> testcases;
@@ -225,5 +242,6 @@ int main()
     generalTestSuite.add(new TC_BasicDoublePrintWithNumberCommand());
     generalTestSuite.add(new TC_MovingOnlyWithNumbers());
     generalTestSuite.add(new TC_BasicRangePrinting());
+    generalTestSuite.add(new TC_InvalidRangePrinting());
     generalTestSuite.run();
 }
