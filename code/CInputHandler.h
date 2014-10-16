@@ -12,15 +12,12 @@ class CInputHandler
 {
     shared_ptr<CStorageHandler> storageHandler;
     shared_ptr<CCommandFactory> commandFactory;
-    ICommand* getCommand(string commandString);
-    bool isValid(CCommandMetadata* cmd);
+    ICommand* getCommand(string command);
+    bool isValid(CCommandMetadata* metacmd);
 public:
-    CInputHandler(const shared_ptr<CStorageHandler>& sh, shared_ptr<CCommandFactory> cf) : storageHandler(sh), commandFactory(cf)
-    {
-        CLogger::getInstance()->log("CInputHandler() created");
-    }
+    CInputHandler(const shared_ptr<CStorageHandler>& sh, shared_ptr<CCommandFactory> cf);
     ~CInputHandler();
-    void process(string commandString) throw(EQuit);
+    void process(string command) throw(EQuit);
 };
 
 #endif

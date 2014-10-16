@@ -5,17 +5,22 @@
 #include "CExceptions.h"
 #include "CParser.h"
 
+CInputHandler::CInputHandler(const shared_ptr<CStorageHandler>& sh, shared_ptr<CCommandFactory> cf) : storageHandler(sh), commandFactory(cf)
+{
+    CLogger::getInstance()->log("CInputHandler() created");
+}
+
 CInputHandler::~CInputHandler()
 {
     CLogger::getInstance()->log("CInputHandler() destroyed");
 }
 
-void CInputHandler::process(string commandString) throw(EQuit)
+void CInputHandler::process(string command) throw(EQuit)
 {
     ICommand* cmd = 0;
     try
     {
-        cmd = getCommand(commandString);
+        cmd = getCommand(command);
     }
     catch(EInvalidAddress e)
     {
@@ -36,22 +41,25 @@ void CInputHandler::process(string commandString) throw(EQuit)
     }
 }
 
-ICommand* CInputHandler::getCommand(string commandString)
+ICommand* CInputHandler::getCommand(string command)
 {
     CParser parser;
-    CCommandMetadata* metacmd = parser.parse(commandString);
+    CCommandMetadata* metacmd = parser.parse(command);
     if(!isValid(metacmd))
+    {
         throw EInvalidAddress();
+        return 0;
+    }
     return commandFactory->getCommand(metacmd);
 }
 
-bool CInputHandler::isValid(CCommandMetadata* cmd)
+bool CInputHandler::isValid(CCommandMetadata* metacmd)
 {
-    if(cmd->startAddress.isPresent)
-        if(!storageHandler->isInRange(cmd->startAddress.value))
+    if(metacmd->startAddress.isPresent)
+        if(!storageHandler->isInRange(metacmd->startAddress.value))
             return false;
-    if(cmd->endAddress.isPresent)
-        if(!storageHandler->isInRange(cmd->endAddress.value))
+    if(metacmd->endAddress.isPresent)
+        if(!storageHandler->isInRange(metacmd->endAddress.value))
             return false;
     return true;
 }
