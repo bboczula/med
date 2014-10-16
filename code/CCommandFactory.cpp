@@ -57,13 +57,6 @@ ICommand* CCommandFactory::getCommand(CCommandMetadata* metadata)
         decrementAndPrint->add(new CPrintCommand());
         return decrementAndPrint;
     }
-    if(metadata->command.value == "1")
-    {
-        CCommandComposite* goToFirstLineAndPrint = new CCommandComposite();
-        goToFirstLineAndPrint->add(new CFirstLineCommand());
-        goToFirstLineAndPrint->add(new CPrintCommand());
-        return goToFirstLineAndPrint;;
-    }
     if(metadata->command.value == "$")
     {
         CCommandComposite* goToLastLineAndPrint = new CCommandComposite();

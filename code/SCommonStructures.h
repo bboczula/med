@@ -1,5 +1,6 @@
 #ifndef C_COMMON_STRUCTURES_H
 #define C_COMMON_STRUCTURES_H
+#include <string>
 
 template<typename T>
 class TOptional
@@ -7,6 +8,11 @@ class TOptional
 public:
     bool isPresent;
     T value;
+    void setValue(T newValue)
+    {
+        isPresent = true;
+        value = newValue;
+    }
 };
 
 class CCommandMetadata

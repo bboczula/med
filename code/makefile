@@ -36,4 +36,4 @@ clean :
 	rm -f med tmed $(OBJS_MT) $(OBJS_REL) $(OBJS)
 
 gtest:
-	g++ -std=c++11 -I${GTEST_DIR}/include -L${GTEST_DIR}/lib CStorageHandlerTest.cpp CClock.h CClock.cpp CLogger.h CLogger.cpp CStorage.h CStorageHandler.h CInputHandler.h CInputHandler.cpp ICommand.h -o test -lgtest -lpthread 
+	g++ -std=c++11 -I${GTEST_DIR}/include -L${GTEST_DIR}/lib CParserTest.cpp CClock.h CClock.cpp CLogger.h CLogger.cpp CStorage.h CStorageHandler.h CInputHandler.h CInputHandler.cpp ICommand.h CParser.h CParser.cpp SCommonStructures.h CCommandFactory.h CCommandFactory.cpp -o test -lgtest -lpthread 
