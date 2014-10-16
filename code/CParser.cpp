@@ -1,6 +1,7 @@
 #include "CParser.h"
 #include <string>
 #include <iostream>
+#include <utility>
 
 void CParser::fillCommand(CCommandMetadata* metacmd, std::string rawCommand)
 {
@@ -37,27 +38,31 @@ void CParser::fillAddress(CCommandMetadata* metacmd, std::string rawAddressStrin
     }
 }
 
+std::pair<std::string, std::string> CParser::splitCommandAndAddress(std::string rawString)
+{
+    std::string rawCommand { };
+    std::string rawAddress { rawString };
+
+    std::size_t commandPosition = rawString.find_first_of(COMMAND_LIST);
+    if(commandPosition != std::string::npos)
+    {
+        rawCommand = rawString.substr(commandPosition);
+        rawAddress = rawString.substr(0, commandPosition);
+    }
+
+    return make_pair(rawCommand, rawAddress);
+}
+
 CCommandMetadata* CParser::parse(std::string command)
 {
     if(command.empty())
         return 0;
 
-    std::size_t commandPosition = command.find_first_of("pnP.+-$q");
-    std::string rawCommand = "";
-    std::string rawAddress = "";;
-    if(commandPosition != std::string::npos)
-    {
-        rawCommand = command.substr(commandPosition);
-        rawAddress = command.substr(0, commandPosition);
-    }
-    else
-    {
-        rawAddress = command;
-    }
+    std::pair<std::string, std::string> commandAndAddress = splitCommandAndAddress(command);
 
     CCommandMetadata* cmd = new CCommandMetadata();
-    fillCommand(cmd, rawCommand);
-    fillAddress(cmd, rawAddress);;
+    fillCommand(cmd, commandAndAddress.first);
+    fillAddress(cmd, commandAndAddress.second);;
 
     return cmd;
 }
