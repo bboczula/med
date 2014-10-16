@@ -3,7 +3,6 @@
 #include <memory>
 #include "CStorageHandler.h"
 #include "CCommandFactory.h"
-#include "ICommand.h"
 #include "CInputHandler.h"
 #include "CLogger.h"
 using namespace std;

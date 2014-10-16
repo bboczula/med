@@ -1,20 +1,37 @@
 OBJS = CClock.o CLogger.o CInputHandler.o CParser.o CCommandFactory.o
 OBJS_REL = main.o
 OBJS_MT = tmain.o
+OBJS_UT = CParserTest.o
 
-# This is the rule for making release binary
+### This is the rule for making release binary
 med : $(OBJS_REL) $(OBJS)
 	g++ -std=c++11 -o med $(OBJS_REL) $(OBJS)
 
-# This is the rule for making binary for module test
+### This is the rule for making binary for module test
 tmed : $(OBJS_MT) $(OBJS)
 	g++ -std=c++11 -o tmed $(OBJS_MT) $(OBJS)
 
-main.o : main.cpp CStorageHandler.h ICommand.h CInputHandler.h CLogger.h
+### This is the rule for making unit tests
+gtest : $(OBJS_UT) $(OBJS)
+	g++ -std=c++11 -I${GTEST_DIR}/include -L${GTEST_DIR}/lib -o test $(OBJS_UT) $(OBJS) -lgtest -lpthread
+
+CInputHandler.o : CInputHandler.h CInputHandler.cpp CStorageHandler.h CLogger.h CCommandFactory.h ICommand.h CExceptions.h CParser.h
+	g++ -std=c++11 -c CInputHandler.cpp
+
+main.o : main.cpp CStorageHandler.h CCommandFactory.h CInputHandler.h CLogger.h
 	g++ -std=c++11 -c main.cpp
 
-tmain.o : tmain.cpp CStorageHandler.h ICommand.h CInputHandler.h CLogger.h
+tmain.o : tmain.cpp CStorageHandler.h CCommandFactory.h CInputHandler.h CLogger.h
 	g++ -std=c++11 -c tmain.cpp
+
+CCommandFactory.o : CCommandFactory.h CCommandFactory.cpp ICommand.h SCommonStructures.h
+	g++ -std=c++11 -c CCommandFactory.cpp
+
+CParser.o : CParser.cpp CParser.h SCommonStructures.h
+	g++ -std=c++11 -c CParser.cpp
+
+CParserTest.o : CParserTest.cpp CParser.h
+	g++ -std=c++11 -c CParserTest.cpp
 
 CClock.o : CClock.h CClock.cpp
 	g++ -std=c++11 -c CClock.cpp
@@ -22,18 +39,6 @@ CClock.o : CClock.h CClock.cpp
 CLogger.o : CLogger.h CLogger.cpp
 	g++ -std=c++11 -c CLogger.cpp
 
-CInputHandler.o : CInputHandler.h CInputHandler.cpp CLogger.h CExceptions.h
-	g++ -std=c++11 -c CInputHandler.cpp
-
-CParser.o : CParser.cpp CParser.h SCommonStructures.h
-	g++ -std=c++11 -c CParser.cpp
-
-CCommandFactory.o : CCommandFactory.h CCommandFactory.cpp SCommonStructures.h
-	g++ -std=c++11 -c CCommandFactory.cpp
-
 .PHONY : clean
 clean :
-	rm -f med tmed $(OBJS_MT) $(OBJS_REL) $(OBJS)
-
-gtest:
-	g++ -std=c++11 -I${GTEST_DIR}/include -L${GTEST_DIR}/lib CParserTest.cpp CClock.h CClock.cpp CLogger.h CLogger.cpp CStorage.h CStorageHandler.h CInputHandler.h CInputHandler.cpp ICommand.h CParser.h CParser.cpp SCommonStructures.h CCommandFactory.h CCommandFactory.cpp -o test -lgtest -lpthread 
+	rm -f test med tmed $(OBJS_UT) $(OBJS_MT) $(OBJS_REL) $(OBJS)
