@@ -1,10 +1,25 @@
 #include "gtest/gtest.h"
 #include "CParser.h"
+#include <string>
 
 class CParserTest : public ::testing::Test
 {
 public:
     CParser parser;
+    CCommandMetadata* result;
+    void assertCommandPresent(std::string expCmd)
+    {
+        ASSERT_TRUE(result->command.isPresent);
+        ASSERT_EQ(result->command.value, expCmd);
+    }
+    void assertCommandNotPresent(std::string expCmd)
+    {
+        ASSERT_FALSE(result->command.isPresent);
+    }
+    void parseCommand(std::string cmd)
+    {
+        result = parser.parse(cmd);
+    }
 protected:
     virtual void SetUp()
     {
@@ -13,18 +28,16 @@ protected:
 
 TEST_F(CParserTest, singlePrint)
 {
-    CCommandMetadata* result = parser.parse("p");
-    ASSERT_TRUE(result->command.isPresent);
-    ASSERT_EQ(result->command.value, "p");
+    parseCommand("p");
+    assertCommandPresent("p");
     ASSERT_FALSE(result->startAddress.isPresent);
     ASSERT_FALSE(result->endAddress.isPresent);
 }
 
 TEST_F(CParserTest, startRangeOnlyPrint)
 {
-    CCommandMetadata* result = parser.parse("2p");
-    ASSERT_TRUE(result->command.isPresent);
-    ASSERT_EQ(result->command.value, "p");
+    parseCommand("2p");
+    assertCommandPresent("p");
     ASSERT_TRUE(result->startAddress.isPresent);
     // Orginal line is decreased by one (addressing in storage)
     ASSERT_EQ(result->startAddress.value, 1);
@@ -33,9 +46,8 @@ TEST_F(CParserTest, startRangeOnlyPrint)
 
 TEST_F(CParserTest, endRangeOnlyPrint)
 {
-    CCommandMetadata* result = parser.parse(",5p");
-    ASSERT_TRUE(result->command.isPresent);
-    ASSERT_EQ(result->command.value, "p");
+    parseCommand(",5p");
+    assertCommandPresent("p");
     ASSERT_FALSE(result->startAddress.isPresent);
     ASSERT_TRUE(result->endAddress.isPresent);
     ASSERT_EQ(result->endAddress.value, 4);
@@ -43,9 +55,8 @@ TEST_F(CParserTest, endRangeOnlyPrint)
 
 TEST_F(CParserTest, fullRangeOnlyPrint)
 {
-    CCommandMetadata* result = parser.parse("2,3p");
-    ASSERT_TRUE(result->command.isPresent);
-    ASSERT_EQ(result->command.value, "p");
+    parseCommand("2,3p");
+    assertCommandPresent("p");
     ASSERT_TRUE(result->startAddress.isPresent);
     // Orginal line is decreased by one (addressing in storage)
     ASSERT_EQ(result->startAddress.value, 1);
@@ -56,9 +67,8 @@ TEST_F(CParserTest, fullRangeOnlyPrint)
 
 TEST_F(CParserTest, separatorRangeOnlyPrint)
 {
-    CCommandMetadata* result = parser.parse(",p");
-    ASSERT_TRUE(result->command.isPresent);
-    ASSERT_EQ(result->command.value, "p");
+    parseCommand(",p");
+    assertCommandPresent("p");
     ASSERT_FALSE(result->startAddress.isPresent);
     ASSERT_FALSE(result->endAddress.isPresent);
 }
