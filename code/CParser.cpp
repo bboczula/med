@@ -2,40 +2,51 @@
 #include <string>
 #include <iostream>
 
-CCommandMetadata* CParser::parse(std::string commandString)
+void CParser::fillCommand(CCommandMetadata* metacmd, std::size_t commandPosition, std::string commandString)
 {
-    std::size_t commandPosition = commandString.find_first_of("pnP.+-$q");
-
-    CCommandMetadata* cmd = new CCommandMetadata();
     if(commandPosition == std::string::npos)
     {
-        cmd->command.setValue("p");
+        metacmd->command.setValue("p");
     }
     else
     {
-        cmd->command.setValue(commandString.substr(commandPosition));
+        metacmd->command.setValue(commandString.substr(commandPosition));
     }
+}
 
-    std::string temp = commandString.substr(0, commandPosition).c_str();
-    if(temp.size())
+void CParser::fillAddress(CCommandMetadata* metacmd, std::string rawAddressString)
+{
+    if(rawAddressString.empty())
+        return;
+
+    std::size_t commaPosition = rawAddressString.find(",");
+    if(commaPosition != std::string::npos)
     {
-        std::size_t commaPosition = temp.find(",");
-        if(commaPosition != std::string::npos)
-        {
-            std::string tempStartAddress = temp.substr(0, commaPosition);
-            std::string tempEndAddress = temp.substr(commaPosition + 1, temp.length());
+        std::string tempStartAddress = rawAddressString.substr(0, commaPosition);
+        std::string tempEndAddress = rawAddressString.substr(commaPosition + 1, rawAddressString.length());
 
-            if(tempStartAddress.size())
-                cmd->startAddress.setValue(atoi(tempStartAddress.c_str()) - 1);
+        if(!tempStartAddress.empty())
+            metacmd->startAddress.setValue(atoi(tempStartAddress.c_str()) - 1);
 
-            if(tempEndAddress.size())
-                cmd->endAddress.setValue(atoi(tempEndAddress.c_str()) - 1);
-        }
-        else
-        {
-            cmd->startAddress.setValue(atoi(temp.c_str()) - 1);
-        }
+        if(!tempEndAddress.empty())
+            metacmd->endAddress.setValue(atoi(tempEndAddress.c_str()) - 1);
     }
+    else
+    {
+        metacmd->startAddress.setValue(atoi(rawAddressString.c_str()) - 1);
+    }
+}
+
+CCommandMetadata* CParser::parse(std::string command)
+{
+    if(command.empty())
+        return 0;
+
+    std::size_t commandPosition = command.find_first_of("pnP.+-$q");
+
+    CCommandMetadata* cmd = new CCommandMetadata();
+    fillCommand(cmd, commandPosition, command);
+    fillAddress(cmd, command.substr(0, commandPosition).c_str());
 
     return cmd;
 }

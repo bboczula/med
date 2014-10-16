@@ -12,7 +12,7 @@ public:
         ASSERT_TRUE(result->command.isPresent);
         ASSERT_EQ(result->command.value, expCmd);
     }
-    void assertCommandNotPresent(std::string expCmd)
+    void assertCommandNotPresent()
     {
         ASSERT_FALSE(result->command.isPresent);
     }
@@ -25,6 +25,12 @@ protected:
     {
     }
 };
+
+TEST_F(CParserTest, emptyCommand)
+{
+    parseCommand("");
+    ASSERT_TRUE(result == 0);
+}
 
 TEST_F(CParserTest, singlePrint)
 {
@@ -69,6 +75,14 @@ TEST_F(CParserTest, separatorRangeOnlyPrint)
 {
     parseCommand(",p");
     assertCommandPresent("p");
+    ASSERT_FALSE(result->startAddress.isPresent);
+    ASSERT_FALSE(result->endAddress.isPresent);
+}
+
+TEST_F(CParserTest, singlePrintWithLineNum)
+{
+    parseCommand("n");
+    assertCommandPresent("n");
     ASSERT_FALSE(result->startAddress.isPresent);
     ASSERT_FALSE(result->endAddress.isPresent);
 }
