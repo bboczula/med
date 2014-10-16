@@ -32,6 +32,24 @@ TEST_F(CParserTest, emptyCommand)
     ASSERT_TRUE(result == 0);
 }
 
+TEST_F(CParserTest, oneDigitOnly)
+{
+    parseCommand("1");
+    assertCommandPresent("p");
+    ASSERT_TRUE(result->startAddress.isPresent);
+    ASSERT_EQ(result->startAddress.value, 0);
+    ASSERT_FALSE(result->endAddress.isPresent);
+}
+
+TEST_F(CParserTest, twoDigitOnly)
+{
+    parseCommand("12");
+    assertCommandPresent("p");
+    ASSERT_TRUE(result->startAddress.isPresent);
+    ASSERT_EQ(result->startAddress.value, 11);
+    ASSERT_FALSE(result->endAddress.isPresent);
+}
+
 TEST_F(CParserTest, singlePrint)
 {
     parseCommand("p");

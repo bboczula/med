@@ -2,15 +2,15 @@
 #include <string>
 #include <iostream>
 
-void CParser::fillCommand(CCommandMetadata* metacmd, std::size_t commandPosition, std::string commandString)
+void CParser::fillCommand(CCommandMetadata* metacmd, std::string rawCommand)
 {
-    if(commandPosition == std::string::npos)
+    if(rawCommand.empty())
     {
         metacmd->command.setValue("p");
     }
     else
     {
-        metacmd->command.setValue(commandString.substr(commandPosition));
+        metacmd->command.setValue(rawCommand);
     }
 }
 
@@ -43,10 +43,21 @@ CCommandMetadata* CParser::parse(std::string command)
         return 0;
 
     std::size_t commandPosition = command.find_first_of("pnP.+-$q");
+    std::string rawCommand = "";
+    std::string rawAddress = "";;
+    if(commandPosition != std::string::npos)
+    {
+        rawCommand = command.substr(commandPosition);
+        rawAddress = command.substr(0, commandPosition);
+    }
+    else
+    {
+        rawAddress = command;
+    }
 
     CCommandMetadata* cmd = new CCommandMetadata();
-    fillCommand(cmd, commandPosition, command);
-    fillAddress(cmd, command.substr(0, commandPosition).c_str());
+    fillCommand(cmd, rawCommand);
+    fillAddress(cmd, rawAddress);;
 
     return cmd;
 }
