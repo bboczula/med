@@ -5,8 +5,8 @@ MED002 - As a user I want to be able to use all operators I used to use with org
     - REGEX commands: g,G,s,v,V
     - VIEW commands: n,p
     - OTHER commands: h,H,k,m,P,q,Q,t,u
-MED002.a - Implement help mechanism
-MED002.a.1 - Prepare requirements for help mechanism
+MED002.a - Implement Error Broadcasting mechanism
+MED002.a.1 - Prepare requirements for Error Broadcasting mechanism
 MED002.a.2 - Implement new command 'h' for displaying last known error
 MED002.a.2.1 - Implement base class for all the exceptions
 MED002.a.2.2 - Add new member to CInputHandler for storing last error

@@ -1,0 +1,13 @@
+After pressing 'h', user should be able to see the last known error message.
+
+If there were no previous errors, there should be no output.
+
+If the error appears, user should see a quiestion mark and the error message should be stored.
+
+The 'H' command should toggle between immediate error showing and showing on demand.
+
+What we consider an error:
+ - requested line address is out of range (less than zero or greater than current number of lines)
+ - requested movement (f.e. '+' or '-' command) will be moved out of range
+ - at least one of the requested addresses from a range is invalid
+ - requested command is not known to med
