@@ -14,6 +14,7 @@ class CInputHandler
     shared_ptr<CCommandFactory> commandFactory;
     ICommand* getCommand(string command);
     bool isValid(CCommandMetadata* metacmd);
+    std::string currentErrorMsg;
 public:
     CInputHandler(const shared_ptr<CStorageHandler>& sh, shared_ptr<CCommandFactory> cf);
     ~CInputHandler();

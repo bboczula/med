@@ -5,7 +5,7 @@
 #include "CExceptions.h"
 #include "CParser.h"
 
-CInputHandler::CInputHandler(const shared_ptr<CStorageHandler>& sh, shared_ptr<CCommandFactory> cf) : storageHandler(sh), commandFactory(cf)
+CInputHandler::CInputHandler(const shared_ptr<CStorageHandler>& sh, shared_ptr<CCommandFactory> cf) : storageHandler(sh), commandFactory(cf), currentErrorMsg("")
 {
     CLogger::getInstance()->log("CInputHandler() created");
 }
