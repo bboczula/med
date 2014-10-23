@@ -5,7 +5,7 @@
 
 class CParser
 {
-    const std::string COMMAND_LIST = "pnP.+-$q";
+    const std::string COMMAND_LIST = "pnP.+-$qh";
     void fillCommand(CCommandMetadata* metacmd, std::string rawCommand);
     void fillAddress(CCommandMetadata* metacmd, std::string rawAddressString);
     std::pair<std::string, std::string> splitCommandAndAddress(std::string rawString);

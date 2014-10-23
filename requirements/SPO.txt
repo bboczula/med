@@ -12,4 +12,5 @@ MED002.a.2 - Implement new command 'h' for displaying last known error
 [DONE] MED002.a.2.2 - Add new member to CInputHandler for storing last error
 MED002.a.2.3 - Add new Command for handling 'h' command
 MED002.a.2.4 - Implement the behavior for new command
+MED002.a.2.5 - Make coverage and implement proper handling when 'h' is passed with arguments
 MED002.a.2 - Implement new command 'H' for toggling immediate error message

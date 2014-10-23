@@ -105,6 +105,30 @@ TEST_F(CParserTest, singlePrintWithLineNum)
     ASSERT_FALSE(result->endAddress.isPresent);
 }
 
+TEST_F(CParserTest, invalidStartAddressDuringErrorBroadcasting)
+{
+    parseCommand("1h");
+    assertCommandPresent("h");
+    ASSERT_TRUE(result->startAddress.isPresent);
+    ASSERT_FALSE(result->endAddress.isPresent);
+}
+
+TEST_F(CParserTest, invalidEndAddressDuringErrorBroadcasting)
+{
+    parseCommand(",2h");
+    assertCommandPresent("h");
+    ASSERT_FALSE(result->startAddress.isPresent);
+    ASSERT_TRUE(result->endAddress.isPresent);
+}
+
+TEST_F(CParserTest, invalidRangeAddressDuringErrorBroadcasting)
+{
+    parseCommand("1,2h");
+    assertCommandPresent("h");
+    ASSERT_TRUE(result->startAddress.isPresent);
+    ASSERT_TRUE(result->endAddress.isPresent);
+}
+
 int main(int argc, char* argv[])
 {
     int i = 1;

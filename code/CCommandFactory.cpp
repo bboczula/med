@@ -68,4 +68,7 @@ ICommand* CCommandFactory::getCommand(CCommandMetadata* metadata)
     {
         return new CQuitCommand();
     }
+    if(metadata->command.value == "h")
+    {
+    }
 }

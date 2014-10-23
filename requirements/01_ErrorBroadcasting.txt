@@ -1,5 +1,7 @@
 After pressing 'h', user should be able to see the last known error message.
 
+If any address (even valid) is added to the command, there should be an error with reason "Uexcpected address".
+
 If there were no previous errors, there should be no output.
 
 If the error appears, user should see a quiestion mark and the error message should be stored.
@@ -11,3 +13,4 @@ What we consider an error:
  - requested movement (f.e. '+' or '-' command) will be moved out of range
  - at least one of the requested addresses from a range is invalid
  - requested command is not known to med
+ - 'h' command with any addres causes "Unexpected address"

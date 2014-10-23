@@ -27,6 +27,11 @@ void CInputHandler::process(string command) throw(EQuit)
         std::cout << "?" << std::endl;
         return;
     }
+    catch(EUnexpectedAddress e)
+    {
+        std::cout << "?" << std::endl;
+        return;
+    }
 
     if(cmd)
     {
@@ -45,6 +50,17 @@ ICommand* CInputHandler::getCommand(string command)
 {
     CParser parser;
     CCommandMetadata* metacmd = parser.parse(command);
+    if(metacmd->command.isPresent)
+    {
+        if(metacmd->command.value == "h")
+        {
+            if(metacmd->startAddress.isPresent || metacmd->startAddress.isPresent)
+            {
+                throw EUnexpectedAddress();
+                return 0;
+            }
+        }
+    }
     if(!isValid(metacmd))
     {
         throw EInvalidAddress();

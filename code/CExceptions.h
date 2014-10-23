@@ -1,33 +1,20 @@
 #ifndef E_QUIT_H
 #define E_QUIT_H
 
-class CExceptionBase
+class EQuit
 {
-    virtual std::string getMessage() = 0;
 };
 
-class EQuit : CExceptionBase
+class ETryToMoveOutOfFile
 {
-    virtual std::string getMessage()
-    {
-        return "Quit";
-    }
 };
 
-class ETryToMoveOutOfFile : CExceptionBase
+class EInvalidAddress
 {
-    virtual std::string getMessage()
-    {
-        return "Invalid address";
-    }
 };
 
-class EInvalidAddress : CExceptionBase
+class EUnexpectedAddress
 {
-    virtual std::string getMessage()
-    {
-        return "Invalid address";
-    }
 };
 
 #endif
